@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{06279af3-21d5-4c88-878e-0a4e44e8faa1}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>tests.py</StartupFile>
+    <SearchPath />
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterId />
+    <InterpreterVersion />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+    <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="app\static\stylesheets\main.css" />
+    <Content Include="app\static\stylesheets\phone.css" />
+    <Content Include="app\templates\404.html" />
+    <Content Include="app\templates\about.html" />
+    <Content Include="app\templates\basic-layout.html" />
+    <Content Include="app\templates\home.html" />
+    <Content Include="app\templates\results.html" />
+    <Content Include="requirements.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="app\forms.py" />
+    <Compile Include="app\models.py" />
+    <Compile Include="app\views.py" />
+    <Compile Include="app\wordlists.py" />
+    <Compile Include="app\__init__.py" />
+    <Compile Include="config.py" />
+    <Compile Include="db_create.py" />
+    <Compile Include="db_migrate.py" />
+    <Compile Include="db_repository\manage.py" />
+    <Compile Include="db_repository\versions\001_migration.py" />
+    <Compile Include="db_repository\versions\002_migration.py" />
+    <Compile Include="db_repository\versions\003_migration.py" />
+    <Compile Include="db_repository\versions\004_migration.py" />
+    <Compile Include="db_repository\versions\005_migration.py" />
+    <Compile Include="db_repository\versions\__init__.py" />
+    <Compile Include="db_repository\__init__.py" />
+    <Compile Include="runsite.py" />
+    <Compile Include="tests.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="app" />
+    <Folder Include="app\static\" />
+    <Folder Include="app\static\stylesheets" />
+    <Folder Include="app\templates" />
+    <Folder Include="db_repository" />
+    <Folder Include="db_repository\versions" />
+  </ItemGroup>
+  <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="!Exists($(PtvsTargetsFile))" />
+</Project>

@@ -6,4 +6,7 @@ app.config.from_object('config')
 
 db = SQLAlchemy(app)
 
+from app import wordlists
+from app import forms
+from app import models
 from app import views

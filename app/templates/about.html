@@ -9,18 +9,24 @@
     <p>I don't totally agree with all the entries in these wordlists. I'd be interested in hearing your thoughts on what's in the lists and shouldn't be, or what's not included that should be. Let me know via Twitter <a href="http://www.twitter.com/lovedaybrooke">@LovedayBrooke</a>, or a <a href="https://github.com/lovedaybrooke/gender-decoder">pull request</a>.</p>
         <div id="masculine">
             <h3>Masculine-coded words</h3>
+            {% for lang in languages %}
+            <h2>{{ lang }}</h2>
             <ul>
-                {% for word in masculine_coded_words %}
+                {% for word in masculine_coded_words[lang] %}
                 <li>{{ word }}</li>
                 {% endfor %}
             </ul>
+            {% endfor %}
         </div>
         <div id="feminine">
             <h3>Feminine-coded words</h3>
+            {% for lang in languages %}
+            <h2>{{ lang }}</h2>
             <ul>
-                {% for word in feminine_coded_words %}
+                {% for word in feminine_coded_words[lang] %}
                 <li>{{ word }}</li>
                 {% endfor %}
             </ul>
+            {% endfor %}
         </div>
     {% endblock %}

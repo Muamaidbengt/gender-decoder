@@ -6,12 +6,13 @@ import os
 import re
 from binascii import hexlify
 
-from app import app, db
-from wordlists import *
+from app import app, db, wordlists
+from app.wordlists import *
 
 
 class JobAd(db.Model):
     hash = db.Column(db.String(), primary_key=True)
+    language = db.Column(db.String())
     date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     ad_text = db.Column(db.Text)
     masculine_word_count = db.Column(db.Integer, default=0)
@@ -21,9 +22,10 @@ class JobAd(db.Model):
     coding = db.Column(db.String())
     coded_word_counter = db.relationship("CodedWordCounter", backref='job_ad')
 
-    def __init__(self, ad_text):
+    def __init__(self, ad_text, lang):
         self.make_hash()
         self.ad_text = ad_text
+        self.language = lang
         self.analyse()
         CodedWordCounter.process_ad(self)
         db.session.add(self)
@@ -31,17 +33,10 @@ class JobAd(db.Model):
 
     def make_hash(self):
         while True:
-            hash = hexlify(os.urandom(8))
+            hash = hexlify(os.urandom(8)).decode("utf-8")
             if hash not in [ad.hash for ad in JobAd.query.all()]:
                 self.hash = hash
                 break
-
-    # old method for recalculating ads eg after changes to clean_up_word_list
-    def fix_ad(self):
-        self.analyse()
-        CodedWordCounter.process_ad(self)
-        db.session.add(self)
-        db.session.commit()
 
     def analyse(self):
         word_list = self.clean_up_word_list()
@@ -49,7 +44,7 @@ class JobAd(db.Model):
         self.assess_coding()
 
     def clean_up_word_list(self):
-        cleaner_text = ''.join([i if ord(i) < 128 else ' '
+        cleaner_text = ''.join([i if ord(i) < 256 else ' '
             for i in self.ad_text])
         cleaner_text = re.sub("[\\s]", " ", cleaner_text, 0, 0)
         cleaned_word_list = re.sub(u"[\.\t\,“”‘’<>\*\?\!\"\[\]\@\':;\(\)\./&]",
@@ -61,7 +56,7 @@ class JobAd(db.Model):
         for word in word_list:
             if word.find("-"):
                 is_coded_word = False
-                for coded_word in hyphenated_coded_words:
+                for coded_word in hyphenated_coded_words[self.language]:
                     if word.startswith(coded_word):
                         is_coded_word = True
                 if not is_coded_word:
@@ -74,10 +69,11 @@ class JobAd(db.Model):
 
     def extract_coded_words(self, advert_word_list):
         words, count = self.find_and_count_coded_words(advert_word_list,
-            masculine_coded_words)
+            masculine_coded_words[self.language])
         self.masculine_coded_words, self.masculine_word_count = words, count
+        
         words, count = self.find_and_count_coded_words(advert_word_list,
-            feminine_coded_words)
+            feminine_coded_words[self.language])
         self.feminine_coded_words, self.feminine_word_count = words, count
 
     def find_and_count_coded_words(self, advert_word_list, gendered_word_list):

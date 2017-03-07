@@ -3,6 +3,7 @@
 
 import os
 import unittest
+import time
 
 from config import basedir
 from app import app, db
@@ -24,118 +25,118 @@ class TestCase(unittest.TestCase):
         db.drop_all()
 
     def test_clean_up_word_list(self):
-        caps = JobAd("Sharing is as important as ambition")
+        caps = JobAd("Sharing is as important as ambition", "en")
         self.assertEqual(caps.clean_up_word_list(),
             ['sharing', 'is', 'as', 'important', 'as', 'ambition'])
-        tab = JobAd("Qualities: sharing\tambition")
+        tab = JobAd("Qualities: sharing\tambition", "en")
         self.assertEqual(tab.clean_up_word_list(),
             ['qualities', 'sharing', 'ambition'])
-        semicolon = JobAd("Sharing;ambitious")
+        semicolon = JobAd("Sharing;ambitious", "en")
         self.assertEqual(semicolon.clean_up_word_list(),
             ['sharing', 'ambitious'])
-        slash = JobAd(u"Sharing/ambitious")
+        slash = JobAd(u"Sharing/ambitious", "en")
         self.assertEqual(slash.clean_up_word_list(), ['sharing', 'ambitious'])
-        hyphen = JobAd(u"Sharing, co-operative, 'servant-leader'")
+        hyphen = JobAd(u"Sharing, co-operative, 'servant-leader'", "en")
         self.assertEqual(hyphen.clean_up_word_list(),
             ['sharing', 'co-operative', 'servant', 'leader'])
-        mdash = JobAd(u"Sharing—ambitious")
+        mdash = JobAd(u"Sharing—ambitious", "en")
         self.assertEqual(mdash.clean_up_word_list(), ['sharing', 'ambitious'])
-        bracket = JobAd(u"Sharing(ambitious) and (leader)")
+        bracket = JobAd(u"Sharing(ambitious) and (leader)", "en")
         self.assertEqual(bracket.clean_up_word_list(), ['sharing', 'ambitious',
             'and', 'leader'])
-        sqbracket = JobAd(u"Sharing[ambitious] and [leader]")
+        sqbracket = JobAd(u"Sharing[ambitious] and [leader]", "en")
         self.assertEqual(sqbracket.clean_up_word_list(), ['sharing',
             'ambitious', 'and', 'leader'])
-        abracket = JobAd(u"Sharing<ambitious> and <leader>")
+        abracket = JobAd(u"Sharing<ambitious> and <leader>", "en")
         self.assertEqual(abracket.clean_up_word_list(), ['sharing',
             'ambitious', 'and', 'leader'])
-        space = JobAd(u"Sharing ambitious ")
+        space = JobAd(u"Sharing ambitious ", "en")
         self.assertEqual(space.clean_up_word_list(), ['sharing', 'ambitious'])
-        amp = JobAd(u"Sharing&ambitious, empathy&kindness,")
+        amp = JobAd(u"Sharing&ambitious, empathy&kindness,", "en")
         self.assertEqual(amp.clean_up_word_list(),
             ['sharing', 'ambitious', 'empathy', 'kindness'])
-        asterisk = JobAd(u"Sharing&ambitious*, empathy*kindness,")
+        asterisk = JobAd(u"Sharing&ambitious*, empathy*kindness,", "en")
         self.assertEqual(asterisk.clean_up_word_list(),
             ['sharing', 'ambitious', 'empathy', 'kindness'])
-        atandquestion = JobAd(u"Lead \"Developer\" Who is Connect@HBS? We ")
+        atandquestion = JobAd(u"Lead \"Developer\" Who is Connect@HBS? We ", "en")
         self.assertEqual(atandquestion.clean_up_word_list(),
             ['lead', 'developer', 'who', 'is', 'connect', 'hbs', 'we'])
-        exclaim = JobAd(u"Lead Developer v good!")
+        exclaim = JobAd(u"Lead Developer v good!", "en")
         self.assertEqual(exclaim.clean_up_word_list(),
             ['lead', 'developer', 'v', 'good'])
-        curls = JobAd(u"“Lead” ‘Developer’ v good!")
+        curls = JobAd(u"“Lead” ‘Developer’ v good!", "en")
         self.assertEqual(exclaim.clean_up_word_list(),
             ['lead', 'developer', 'v', 'good'])
 
     def test_extract_coded_words(self):
-        j1 = JobAd(u"Ambition:competition–decisiveness, empathy&kindness")
+        j1 = JobAd(u"Ambition:competition–decisiveness, empathy&kindness", "en")
         self.assertEqual(j1.masculine_coded_words,
             "ambition,competition,decisiveness")
         self.assertEqual(j1.masculine_word_count, 3)
         self.assertEqual(j1.feminine_coded_words, "empathy,kindness")
         self.assertEqual(j1.feminine_word_count, 2)
-        j2 = JobAd(u"empathy&kindness")
+        j2 = JobAd(u"empathy&kindness", "en")
         self.assertEqual(j2.masculine_coded_words, "")
         self.assertEqual(j2.masculine_word_count, 0)
         self.assertEqual(j2.feminine_coded_words, "empathy,kindness")
         self.assertEqual(j2.feminine_word_count, 2)
-        j3 = JobAd(u"empathy irrelevant words kindness")
+        j3 = JobAd(u"empathy irrelevant words kindness", "en")
         self.assertEqual(j3.masculine_coded_words, "")
         self.assertEqual(j3.masculine_word_count, 0)
         self.assertEqual(j3.feminine_coded_words, "empathy,kindness")
         self.assertEqual(j3.feminine_word_count, 2)
 
     def test_assess_coding_neutral_and_empty(self):
-        j1 = JobAd("irrelevant words")
+        j1 = JobAd("irrelevant words", "en")
         self.assertFalse(j1.masculine_word_count)
         self.assertFalse(j1.feminine_word_count)
         self.assertEqual(j1.coding, "empty")
-        j2 = JobAd("sharing versus aggression")
+        j2 = JobAd("sharing versus aggression", "en")
         self.assertEqual(j2.masculine_word_count, j2.feminine_word_count)
         self.assertEqual(j2.coding, "neutral")
 
     def test_assess_coding_masculine(self):
-        j1 = JobAd(u"Ambition:competition–decisiveness, empathy&kindness")
+        j1 = JobAd(u"Ambition:competition–decisiveness, empathy&kindness", "en")
         self.assertEqual(j1.masculine_word_count, 3)
         self.assertEqual(j1.feminine_word_count, 2)
         self.assertEqual(j1.coding, "masculine-coded")
-        j2 = JobAd(u"Ambition:competition–decisiveness, other words")
+        j2 = JobAd(u"Ambition:competition–decisiveness, other words", "en")
         self.assertEqual(j2.masculine_word_count, 3)
         self.assertEqual(j2.feminine_word_count, 0)
         self.assertEqual(j2.coding, "masculine-coded")
-        j3 = JobAd(u"Ambition:competition–decisiveness&leadership, other words")
+        j3 = JobAd(u"Ambition:competition–decisiveness&leadership, other words", "en")
         self.assertEqual(j3.masculine_word_count, 4)
         self.assertEqual(j3.feminine_word_count, 0)
         self.assertEqual(j3.coding, "strongly masculine-coded")
         # NB: repeated "decisiveness" in j4
         j4 = JobAd(u"Ambition:competition–decisiveness&leadership,"
-            " decisiveness, stubborness, sharing and empathy")
+            " decisiveness, stubborness, sharing and empathy", "en")
         self.assertEqual(j4.masculine_word_count, 6)
         self.assertEqual(j4.feminine_word_count, 2)
         self.assertEqual(j4.coding, "strongly masculine-coded")
 
     def test_assess_coding_feminine(self):
-        j1 = JobAd(u"Ambition:competition, empathy&kindness, co-operation")
+        j1 = JobAd(u"Ambition:competition, empathy&kindness, co-operation", "en")
         self.assertEqual(j1.masculine_word_count, 2)
         self.assertEqual(j1.feminine_word_count, 3)
         self.assertEqual(j1.coding, "feminine-coded")
-        j2 = JobAd(u"empathy&kindness, co-operation and some other words")
+        j2 = JobAd(u"empathy&kindness, co-operation and some other words", "en")
         self.assertEqual(j2.masculine_word_count, 0)
         self.assertEqual(j2.feminine_word_count, 3)
         self.assertEqual(j2.coding, "feminine-coded")
-        j3 = JobAd(u"empathy&kindness, co-operation, trust and other words")
+        j3 = JobAd(u"empathy&kindness, co-operation, trust and other words", "en")
         self.assertEqual(j3.masculine_word_count, 0)
         self.assertEqual(j3.feminine_word_count, 4)
         self.assertEqual(j3.coding, "strongly feminine-coded")
         j4 = JobAd(u"Ambition:competition, empathy&kindness and"
-            " responsibility, co-operation, honesty, trust and other words")
+            " responsibility, co-operation, honesty, trust and other words", "en")
         self.assertEqual(j4.masculine_word_count, 2)
         self.assertEqual(j4.feminine_word_count, 6)
         self.assertEqual(j4.coding, "strongly feminine-coded")
 
     def test_analyse(self):
         j1 = JobAd(u"Ambition:competition–decisiveness&leadership,"
-            " decisiveness, stubborness, sharing and empathy")
+            " decisiveness, stubborness, sharing and empathy", "en")
         self.assertEqual(j1.ad_text, u"Ambition:competition–decisiveness"
             "&leadership, decisiveness, stubborness, sharing and empathy")
         self.assertTrue(j1.coding == "strongly masculine-coded")
@@ -146,7 +147,7 @@ class TestCase(unittest.TestCase):
         self.assertEqual(j1.feminine_coded_words,"sharing,empathy")
 
     def test_increment_or_create(self):
-        ad = JobAd(u"sharing leader sharing")
+        ad = JobAd(u"sharing leader sharing", "en")
         sharing_counter = CodedWordCounter.query.filter_by(
             ad_hash=ad.hash).filter_by(word='sharing').all()
         self.assertEqual(len(sharing_counter), 1)
@@ -166,7 +167,7 @@ class TestCase(unittest.TestCase):
     def test_process_ad(self):
         ad = JobAd(u"Sharing: ambition\tkindness&empathy(never more than frou)"
                 " Who is Connect@HBS? leader-supporter-follower "
-                "aggresive/responsible;understand? connect")
+                "aggresive/responsible;understand? connect", "en")
         CodedWordCounter.process_ad(ad)
         counters = CodedWordCounter.query.filter_by(ad_hash=ad.hash).all()
         self.assertEqual(len(counters), 9)
@@ -185,6 +186,15 @@ class TestCase(unittest.TestCase):
         self.assertEqual(len(counters), 9)
         total_count = sum([counter.count for counter in counters])
         self.assertEqual(total_count, 10)
+
+    def test_swedish_dictionary(self):
+        ad = JobAd("testa som en grym gasell leader responsible", "sv")
+        self.assertEqual(ad.masculine_word_count, 1)
+
+    def test_swedish_characters(self):
+        ad = JobAd(u"testa som en snäll trevlig ödmjuk gasell med swänska tecken", "sv")
+        
+        self.assertEqual(ad.feminine_word_count, 3)
 
 if __name__ == '__main__':
     unittest.main()

@@ -9,6 +9,8 @@
             {{ form.hidden_tag() }}
             <label for="texttotest">Paste your job ad here</label>
             {{ form.texttotest(cols="90", rows="20")|safe }}
+            <label for="language">Select language</label>
+            {{ form.language()|safe }}
             <input type="submit" value="Check this ad" class="button"/>
         </form>
     
