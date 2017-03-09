@@ -14,8 +14,8 @@
     <StaticUriPattern>^/static/.*</StaticUriPattern>
     <StaticUriRewrite>^/$(MSBuildProjectName)/static/.*</StaticUriRewrite>
     <PythonWsgiHandler>$(MSBuildProjectName).app</PythonWsgiHandler>
-    <Name>FlaskWebProject1</Name>
-    <RootNamespace>FlaskWebProject1</RootNamespace>
+    <Name>gender-decoder</Name>
+    <RootNamespace>gender-decoder</RootNamespace>
     <UseIISExpress>true</UseIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
