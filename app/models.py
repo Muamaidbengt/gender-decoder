@@ -4,6 +4,7 @@
 import datetime
 import os
 import re
+import math
 from binascii import hexlify
 
 from app import app, db, wordlists
@@ -83,20 +84,29 @@ class JobAd(db.Model):
         return (",").join(gender_coded_words), len(gender_coded_words)
 
     def assess_coding(self):
-        coding_score = self.feminine_word_count - self.masculine_word_count
-        if coding_score == 0:
-            if self.feminine_word_count:
-                self.coding = "neutral"
-            else:
-                self.coding = "empty"
-        elif coding_score > 3:
-            self.coding = "strongly feminine-coded"
-        elif coding_score > 0:
+        coding_diff = self.feminine_word_count - self.masculine_word_count
+        total_count = self.feminine_word_count + self.masculine_word_count
+        minimum_words = 5 # prevent abnormalities due to few matched words
+        strong_cutoff = 0.33 # > 0.33 means there are more than twice as many f words as m words
+
+        if total_count == 0:
+            self.coding = "empty"
+        elif coding_diff == 0:
+            self.coding = "neutral"
+        elif total_count < minimum_words and coding_diff > 0:
             self.coding = "feminine-coded"
-        elif coding_score < -3:
-            self.coding = "strongly masculine-coded"
-        else:
+        elif total_count < minimum_words:
             self.coding = "masculine-coded"
+        else:
+            coding_score = coding_diff / total_count
+            if coding_score > strong_cutoff:
+                self.coding = "strongly feminine-coded"
+            elif coding_score > 0:
+                self.coding = "feminine-coded"
+            elif coding_score < -strong_cutoff:
+                self.coding = "strongly masculine-coded"
+            else:
+                self.coding = "masculine-coded"
 
     def list_words(self):
         if self.masculine_coded_words == "":
