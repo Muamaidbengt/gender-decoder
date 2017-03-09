@@ -5,27 +5,58 @@ languages = [ "sv", "en" ]
 
 feminine_coded_words = {
     "sv": [
-        "snäll",
-        "trevlig",
-        "ödmjuk",
-        "barn",
-        "samarbet",
-        "empat",
-        "smickra",
-        "interperson",
-        "lojal",
-        "känsl",
-        "tillit",
+        # från http://uu.diva-portal.org/smash/get/diva2:896718/FULLTEXT01.pdf med några mindre modifikationer
+        "anknyt", #a, ning
+        "artig",
+        "anspråkslös",
         "ansvar",
+        "barn",
+        "beroende",
+        "empati",
+        "engage", #mang, rad
+        "femini",
+        "förstå",
+        "glad",
+        "gnäll", #a, ig
+        "känsl", #osam, ig, ofylld
+        "medlidande",
+        "omtänksam",
+        "lojal",
+        "mild",
+        "omhänderta",
+        "snäll",
+        "social",
+        "släktskap",
+        "smickra",
+        "stöd", 
+        "stött", #ande, epelare
+        "sympati",
+        "samarbet",
+        "tjat", #dafuq?
+        "trevlig",
+        "tillgiven"
+        "tyst",
+        "tillsammans",
+        "tillit",
+        "lita",
+        "undergiven",
         "varm",
+        "ärlig",
+        "öm"
+
+        # tillägg
+
+        "entusias",
         "inklude",
         "inklusi",
-        "entusias",
-        "ärlig",
-        "support",
+        "inkänna",
+        "interperson",
+        "kvinn",
         "stödj",
         "stött",
-        "vänlig"
+        "subjektiv",
+        "vänlig",
+        "ödmjuk"
         ],
     "en": [
         "agree",
@@ -82,29 +113,56 @@ feminine_coded_words = {
 
 masculine_coded_words = { 
     "sv": [
-        "aggressiv",
+        # från http://uu.diva-portal.org/smash/get/diva2:896718/FULLTEXT01.pdf med några mindre modifikationer
         "aktiv",
-        "äventyr",
-        "grym",
-        "ambiti",
-        "analy",
+        "aggress",
+        "ambiti", #on, ös
+        "analy", #tisk, s
         "atlet",
-        "utmana",
         "autonom",
-        "självgå",
-        "kämp",
-        "kämp",
+        "beslut",
+        "bestäm", #ma, d
+        "domin", #era, ant
+        "envis",
+        "fientlig",
+        "frispråkig",
+        "girig",
+        "hierarki",
+        "hänsynslös",
+        "individ", 
+        "intellekt", 
+        "intelligen", #s, t
+        "impulsiv",
+        "kraftfull",
+        "kompetent",
+        "ledare",
+        "logik",
+        "logisk",
+        "maskulin",
+        "modig",
+        "objektiv",
+        "självsäker",
+        "själständig",
+        "självförtroende",
+        "åsikt",
+
+        # Tillägg
+        "drive", #n, r
+        "driva",
         "förkämpe",
-        "bestäm",
+        "försvar",
+        "grym",
+        "hungrig",
         "intellekt",
         "intelligen",
-        "åsikt",
+        "kämp", #e, a
         "leda",
-        "försvar",
-        "domin",
-        "drive",
-        "driva",
-        "hierark",
+        "manlig",
+        "självgå",
+        "tjurig",
+        "tjurskall", #e, ig
+        "utmana",
+        "äventyr"
         ],
     "en": [
         "active",
