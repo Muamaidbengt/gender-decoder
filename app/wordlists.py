@@ -5,7 +5,7 @@ languages = [ "sv", "en" ]
 
 feminine_coded_words = {
     "sv": [
-        # från http://uu.diva-portal.org/smash/get/diva2:896718/FULLTEXT01.pdf med några mindre modifikationer
+        # from http://uu.diva-portal.org/smash/get/diva2:896718/FULLTEXT01.pdf with some minor modifications
         "anknyt", #a, ning
         "artig",
         "anspråkslös",
@@ -32,7 +32,7 @@ feminine_coded_words = {
         "stött", #ande, epelare
         "sympati",
         "samarbet",
-        "tjat", #dafuq?
+        "tjat",
         "trevlig",
         "tillgiven"
         "tyst",
@@ -44,10 +44,9 @@ feminine_coded_words = {
         "ärlig",
         "öm"
 
-        # tillägg
-
+        # Additions
         "entusias",
-        "inklude",
+        "inkluder",
         "inklusi",
         "inkänna",
         "interperson",
@@ -113,7 +112,7 @@ feminine_coded_words = {
 
 masculine_coded_words = { 
     "sv": [
-        # från http://uu.diva-portal.org/smash/get/diva2:896718/FULLTEXT01.pdf med några mindre modifikationer
+        # from http://uu.diva-portal.org/smash/get/diva2:896718/FULLTEXT01.pdf with some minor modifications
         "aktiv",
         "aggress",
         "ambiti", #on, ös
@@ -133,7 +132,7 @@ masculine_coded_words = {
         "intellekt", 
         "intelligen", #s, t
         "impulsiv",
-        "kraftfull",
+        "kraft", #ig, full
         "kompetent",
         "ledare",
         "logik",
@@ -142,11 +141,11 @@ masculine_coded_words = {
         "modig",
         "objektiv",
         "självsäker",
-        "själständig",
+        "självständig",
         "självförtroende",
         "åsikt",
 
-        # Tillägg
+        # Additions
         "drive", #n, r
         "driva",
         "förkämpe",
@@ -161,7 +160,8 @@ masculine_coded_words = {
         "självgå",
         "tjurig",
         "tjurskall", #e, ig
-        "utmana",
+        "utman", #ar, ande, ing
+        "vass",
         "äventyr"
         ],
     "en": [
